@@ -1,0 +1,28 @@
+html {
+    box-sizing: border-box;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+.board-wrapper__board {
+    font-size: 0;
+    width: 300px;
+    margin: 100px auto 0 auto;
+    cursor: pointer;
+}
+
+.board__cell {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+}
+
+.board__cell_right-border {
+    border-right: 2px solid black;
+}
+
+.board__cell_bottom-border {
+    border-bottom: 2px solid black;
+}
