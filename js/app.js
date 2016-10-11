@@ -1,64 +1,45 @@
 'use strict';
 
 function Cell(x, y) {
-  this.x = x;
-  this.y = y;
   this.state = '';
+  
+  this.element = $('<div class="board__cell"></div>');
+  if (x < 2) {
+    this.element.addClass('board__cell_right-border');
+  }
+  if (y < 2) {
+    this.element.addClass('board__cell_bottom-border');
+  }
 }
 
-Cell.prototype.handleClick = function() {
-  this.onClick(this);
-  if (this.state === 'X') {
-    this.elem.addClass('board__cell_X');
-  }
-  if (this.state === 'Y') {
-    this.elem.addClass('board__cell_y');
-  }
+Cell.prototype.setX = function() {
+  this.state = 'X';
+  this.element.addClass('board__cell_X');
 };
 
-Cell.prototype.createElement = function() {
-  this.elem = $('<div class="board__cell"></div>');
-  if (this.x < 2) {
-    this.elem.addClass('board__cell_right-border');
-  }
-  if (this.y < 2) {
-    this.elem.addClass('board__cell_bottom-border');
-  }
-  this.elem.click(this.handleClick.bind(this));
-  return this.elem;
+Cell.prototype.setO = function() {
+  this.state = 'O';
+  this.element.addClass('board__cell_O');
 };
 
-function Board(cells) {
-  this.cells = cells;
-  this.turn = 'X';
-  this.gameOver = false;
+function Board() {
+  var grid = [];
+
+  var boardElem = $('<div class="board board-wrapper__board"></div>');
+  for (var y = 0; y < 3; y++) {
+    var row = [];
+    for (var x = 0; x < 3; x++) {
+      var cell = new Cell(x, y);
+      row.push(cell);
+      boardElem.append(cell.element);
+    }
+    grid.push(row);
+  }
+
+  this.element = boardElem;
 }
-
-Board.prototype.handleCellClick = function(cell) {
-  if (cell.state !== '' || this.gameOver) {
-    return;
-  }
-  cell.state = this.turn;
-  // TODO: Check win conditions
-};
-
-Board.prototype.createElement = function() {
-  var elem = $('<div class="board board-wrapper__board"></div>');
-  for (var i = 0; i < this.cells.length; i++) {
-    var cell = this.cells[i];
-    cell.onClick = this.handleCellClick.bind(this);
-    elem.append(cell.createElement());
-  }
-  return elem;
-};
 
 $(function() {
-  var cells = [];
-  for (var y = 0; y < 3; y++) {
-    for (var x = 0; x < 3; x++) {
-      cells.push(new Cell(x, y));
-    }
-  }
-  var board = new Board(cells);
-  $('#js-board-wrapper').append(board.createElement());
+  var board = new Board();
+  $('#js-board-wrapper').append(board.element);
 });
